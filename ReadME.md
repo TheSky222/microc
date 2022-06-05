@@ -1,42 +1,25 @@
-﻿## 文件说明
+﻿# microC的完善与改进
+---
 
-### interpreter  解释器
+- 课程名称：编程语言原理与编译
+- 实验项目：期末大作业
+- 专业班级：计算机1904
+- 学生学号：31902176
+- 学生姓名：陆浩天
+- 实验指导教师: 张芸
+- github网址：https://github.com/TheSky222/microc
 
-```sh
-Absyn.fs micro-C abstract syntax                              抽象语法
-grammar.txt informal micro-C grammar and parser specification 文法定义
-CLex.fsl micro-C lexer specification                          fslex词法定义
-CPar.fsy micro-C parser specification                         fsyacc语法定义
-Parse.fs micro-C parser                                       语法解析器
-Interp.fs micro-C interpreter                                 解释器
-example/ex1.c-ex25.c micro-C example programs                 例子程序
-interpc.fsproj                                                项目文件
+---
 
-```
+## 简介
+本学期编译原理大作业，主要基于microC着手完成，对编译器进行了改进和开发，主要完成功能如下：
 
-### compiler  编译器
-
-```sh
-Machine.fs definition of micro-C stack machine instructions  VM 指令定义
-Machine.java micro-C stack machine in Java                   VM 实现 java
-machine.c micro-C stack machine in C                         VM 实现 c 
-machine.cs micro-C stack machine in CSharp                   VM 实现 c#
-machine.csproj  machine project file                         VM 项目文件
-
-Comp.fs compile micro-C to stack machine code             编译器 输出 stack vm 指令序列
-Backend.fs x86_64 backend                                 编译器后端 翻译 stack vm 指令序列到 x86_64
-driver.c     runtime support                                 运行时支持程序
-prog0 example stack machine program: print numbers           字节码 案例，输出数字
-prog1 example stack machine program: loop 20m times          字节码 案例，循环2千万次
-microc.fsproj                                                编译器项目文件
-```
-
-### compiler  优化编译器
-
-```sh
-Contcomp.fs compile micro-C backwards                   优化编译器
-microcc.fsproj                                          优化编译器项目文件
-```
+- 改进了类型系统，纠正了char类型的不合理设计，新增了float类型
+- 改进了变量定义，增加了带初始值的变量定义。
+- 增加了条件表达式
+- 增加了自增和自减运算
+- 改进了循环语句，增加了两种新的循环：for和do while，对现有的所有循环支持了break和continue
+- 增加了switch case语句，支持break
 
 ## 构建与执行
 
@@ -64,10 +47,16 @@ dotnet build -t:ccrun interpc.fsproj
 
 ```sh
 # 生成扫描器
-dotnet "C:\Users\gm\.nuget\packages\fslexyacc\10.2.0\build\/fslex/netcoreapp3.1\fslex.dll"  -o "CLex.fs" --module CLex --unicode CLex.fsl
+# macos or linux
+dotnet "~/.nuget/packages/fslexyacc/10.2.0/build/fsyacc/netcoreapp3.1/fsyacc.dll" -o "CLex.fs" --module CLex --unicode CLex.fsl
+# windows
+dotnet "%homepath%\.nuget\packages\fslexyacc\10.2.0\build\/fslex/netcoreapp3.1\fslex.dll"  -o "CLex.fs" --module CLex --unicode CLex.fsl
 
 # 生成分析器
-dotnet "C:\Users\gm\.nuget\packages\fslexyacc\10.2.0\build\/fsyacc/netcoreapp3.1\fsyacc.dll"  -o "CPar.fs" --module CPar CPar.fsy
+# macos or linux
+dotnet "~/.nuget/packages/fslexyacc/10.2.0/build/fsyacc/netcoreapp3.1/fsyacc.dll" -o "CPar.fs" --module CPar CPar.fsy
+# windows
+dotnet "%homepath%\.nuget\packages\fslexyacc\10.2.0\build\/fsyacc/netcoreapp3.1\fsyacc.dll"  -o "CPar.fs" --module CPar CPar.fsy
 
 # 命令行运行程序
 dotnet fsi 
